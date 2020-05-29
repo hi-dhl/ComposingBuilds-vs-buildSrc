@@ -1,0 +1,5 @@
+rootProject.name='Project-ComposingBuild'
+include ':app'
+includeBuild 'versionPlugin'
+
+
