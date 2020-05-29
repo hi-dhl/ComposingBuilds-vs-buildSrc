@@ -1,0 +1,2 @@
+rootProject.name='Project-buildSrc'
+include ':app'
