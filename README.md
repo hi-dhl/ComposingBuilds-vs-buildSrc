@@ -1,4 +1,4 @@
-# ComposingBuilds vs buildSrc
+![](http://cdn.51git.cn/2020-05-30-15908387076245.jpg)
 
 ## 前言
 
@@ -7,11 +7,11 @@
 buildSrc 这种方式，在最近几年是非常流行的，因为它有以下优点：
 
 * 共享 buildSrc 库工件的引用，全局只有一个地方可以修改它
-* 支持 AndroidStudio 自动补全
+* 支持 AndroidStudio 自动补全，如果图片无法查看，请点击[查看自动补全](http://cdn.51git.cn/2020-05-30-自动补全.gif)
 
 ![自动补全](http://cdn.51git.cn/2020-05-30-自动补全.gif)
 
-* 支持 AndroidStudio 单击跳转
+* 支持 AndroidStudio 单击跳转，如果图片无法查看，请点击[查看单击跳转](http://cdn.51git.cn/2020-05-30-单击跳转.gif)
 
 ![单击跳转](http://cdn.51git.cn/2020-05-30-单击跳转.gif)
 
@@ -29,6 +29,7 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 
 * 什么是 buildSrc？
 * 什么是 Composing builds？
+* 如何使用 Composing builds 和 buildSrc
 * buildSrc 和 Composing builds 优势劣势对比？
 * Composing builds 编译速度怎么样？
 * buildSrc 如何迁移到 Composing builds？
@@ -55,54 +56,13 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 
 为了正确对比这两种方式，新建了两个空的项目分别是 Project-buildSrc 和 Project-ComposingBuild，这两个项目引用的依赖都是一样的，Project-buildSrc 包含 buildSrc，Project-ComposingBuild 包含 Composing builds。
 
-**Project-buildSrc 目录结构**
+![Composing-builds-vs-buildSr](http://cdn.51git.cn/2020-05-30-Composing-builds-vs-buildSrc2.png)
 
-```
-├── buildSrc
-│   ├── build.gradle.kts
-│   └── src
-│       ├── main
-│       │   └── kotlin
-│       │       └── com
-│       │           └── hi
-│       │               └── dhl
-│       │                   └── Deps.kt
-│       └── test
-│           └── kotlin
-│               └── com
-│                   └── hi
-│                       └── dhl
-│                           └── DepsTest.java
-```
-
-**Project-ComposingBuild 目录结构**
-
-```
-└── versionPlugin
-    ├── build.gradle
-    ├── src
-    │   ├── main
-    │   │   └── java
-    │   │       └── com
-    │   │           └── hi
-    │   │               └── dhl
-    │   │                   └── plugin
-    │   │                       └── Deps.kt
-    │   └── test
-    │       └── kotlin
-    │           └── com
-    │               └── hi
-    │                   └── dhl
-    │                       └── plugin
-    │                           └── DepsTest.java
-```
-
-Project-buildSrc 和 Project-ComposingBuild 它们的结构都差不多的，接下来我们来看一下，编译速度 和 使用有什么不同
-
+Project-buildSrc 和 Project-ComposingBuild 它们的结构都差不多的，接下来我们来看一下，编译速度 和 使用有什么不同。
 
 #### 编译速度
 
-Project-buildSrc 和 Project-ComposingBuild 这两个项目，它们的 androidx.appcompat:appcompat 当前的版本是 1.0.2，现在我们从 1.0.2 升级到 1.1.0 来看一下它们 Build 的时间
+Project-buildSrc 和 Project-ComposingBuild 这两个项目，它们的 androidx.appcompat:appcompat 的版本是 1.0.2，现在我们从 1.0.2 升级到 1.1.0 来看一下它们 Build 的时间。
 
 * **Project-buildSrc**：修改了版本号 1.0.2 -> 1.1.0 重新 Build 用时 37s
 
@@ -112,9 +72,11 @@ Project-buildSrc 和 Project-ComposingBuild 这两个项目，它们的 androidx
 
 ![Project-ComposingBuild](http://cdn.51git.cn/2020-05-30-WX20200529-022301@2x.png)
 
-当修改了版本号，Project-buildSrc Build 的时间几乎是 Project-ComposingBuild 4.6倍（ PS: 每个人的环境不同，时间上会有差异，但是 Project-buildSrc 的时间 大于 Project-ComposingBuild ）
+当修改了版本号，Project-buildSrc 项目 Build 的时间几乎是 Project-ComposingBuild  项目的 4.6 倍（ PS: 每个人的环境不同，时间上会有差异，但是 Project-buildSrc 的时间总是大于 Project-ComposingBuild ）
 
-#### 使用上如何呢
+在更大的项目中，网络慢的情况下，这种差异会更加明显，几分钟的构建都是常事，在 buildSrc 中做微小的更改，可能需要花很长时间构建，等待团队其他成员在他们提取更改之后，都将导致项目重新构建，这个代价是非常昂贵的。
+
+#### 它们在使用上有什么不同呢
 
 **Project-buildSrc**
 
@@ -210,21 +172,70 @@ plugins{
 }
 ```
 
-Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件，但是和编译速度比起了，可以忽略不计
+Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件，但是和编译速度比起来，可以忽略不计
 
 ## 总结
 
+总共从以下几个方面对比了 Composing builds 和 buildSrc
+
+* 目录结构：它们的基本目录结构是相同的，可以根据自己的项目进行不同的扩展
+* 编译速度：当修改了版本号，Project-buildSrc 项目 Build 的时间几乎是 Project-ComposingBuild  项目的 4.6 倍（ PS: 每个人的环境不同，时间上会有差异，但是 Project-buildSrc 的时间总是大于 Project-ComposingBuild ）
+* 使用的区别：Composing builds 比 buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件
+
+Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub 了
+
+[地址：https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
+
 **到目前为止大概管理 Gradle 依赖提供了 4 种不同方法：**
 
-* 手动管理 ：在每个 module 中定义插件依赖库，每次升级依赖库时都需要手动更改
-* 使用 Google 推荐的 “ext” ：这是 Google 推荐管理依赖的方法 [Android官方文档](https://developer.android.com/studio/build/gradle-tips#configure-project-wide-properties)
-* Kotlin + buildSrc：自动补全和单击跳转，依赖更新时**将重新**构建整个项目
-* Composing builds：自动补全和单击跳转，依赖更新**不会重新**构建整个项目
+* 手动管理 ：在每个 module 中定义插件依赖库，每次升级依赖库时都需要手动更改（不建议使用）
+* 使用 ext 的方式管理插件依赖库 ：这是 Google 推荐管理依赖的方法 [Android官方文档](https://developer.android.com/studio/build/gradle-tips#configure-project-wide-properties)
+* Kotlin + buildSrc：自动补全和单击跳转，依赖更新时 **将重新** 构建整个项目
+* Composing builds：自动补全和单击跳转，依赖更新时 **不会重新** 构建整个项目
 
 **buildSrc 如何迁移到 Composing builds？**
 
-如果当前项目使用的是 buildSrc 方式，迁移到 Composing builds 很简单，需要将 buildSrc 内容拷贝的 Composing builds 中，然后删掉 buildSrc 文件夹就可以
+如果当前项目使用的是 buildSrc 方式，迁移到 Composing builds 很简单，需要将 buildSrc 内容拷贝的 Composing builds 中，然后删掉 buildSrc 文件夹就可以即可
+
+## 参考文献
+
+* [Organizing Gradle Projects](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources)
+* [Composing builds](https://docs.gradle.org/current/userguide/composite_builds.html)
+* [Android官方文档，使用 ext 的方式管理插件依赖库](https://developer.android.com/studio/build/gradle-tips#configure-project-wide-properties)
 
 ## 结语
 
 致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，可以关注我，如果你喜欢这篇文章欢迎 star 一起来学习，期待与你一起成长
+
+### 文章列表
+
+#### Android 10 源码系列
+
+* [0xA01 Android 10 源码分析：APK 是如何生成的](https://juejin.im/post/5e4366c3f265da57397e1189)
+* [0xA02 Android 10 源码分析：APK 的安装流程](https://juejin.im/post/5e5a1e6a6fb9a07cb427d8cd)
+* [0xA03 Android 10 源码分析：APK 加载流程之资源加载](https://juejin.im/post/5e6c8c14f265da574b792a1a)
+* [0xA04 Android 10 源码分析：APK 加载流程之资源加载（二）](https://juejin.im/post/5e7f0f2c51882573c4676bc7)
+* [0xA05 Android 10 源码分析：Dialog 加载绘制流程以及在 Kotlin、DataBinding 中的使用](https://juejin.im/post/5e9199db6fb9a03c7916f635)
+* [0xA06 Android 10 源码分析：WindowManager 视图绑定以及体系结构](https://juejin.im/post/5ead0b865188256d545fd2f8)
+
+#### Android 应用系列
+
+* [如何高效获取视频截图](https://juejin.im/post/5d11d8835188251c10631ffd)
+* [如何在项目中封装 Kotlin + Android Databinding](https://juejin.im/post/5e9c434a51882573663f6cc6)
+* [[译][Google工程师] 刚刚发布了 Fragment 的新特性 “Fragment 间传递数据的新方式” 以及源码分析](https://juejin.im/post/5eb58da05188256d6d6bb248) 
+* [[译][2.4K Start] 放弃 Dagger 拥抱 Koin](https://juejin.im/post/5ebc1eb8e51d454dcf45744e?utm_source=gold_browser_extension)
+* [[译][5k+] Kotlin 的性能优化那些事](https://juejin.im/post/5ec0f3afe51d454db11f8a94#heading-7)
+* [[译][Google工程师] 详解 FragmentFactory 如何优雅使用 Koin 以及源码分析](https://juejin.im/post/5ecc10626fb9a047e25d5aac)
+* [[译] 解密 RxJava 的异常处理机制](https://juejin.im/post/5ecc10626fb9a047e25d5aac)
+
+#### 工具系列
+
+* [为数不多的人知道的 AndroidStudio 快捷键(一)](https://juejin.im/post/5df4933e518825126e639d62)
+* [为数不多的人知道的 AndroidStudio 快捷键(二)](https://juejin.im/post/5df986d66fb9a016613903da)
+* [关于 adb 命令你所需要知道的](https://juejin.im/post/5d57cfff51882505a87a8526)
+* [10分钟入门 Shell 脚本编程](https://juejin.im/post/5a6378055188253dc332130a)
+
+#### 逆向系列
+
+* [基于 Smali 文件 Android Studio 动态调试 APP](https://juejin.im/post/5c8ce8b76fb9a049e30900bf)
+* [解决在 Android Studio 3.2 找不到 Android Device Monitor 工具](https://juejin.im/post/5c556ff7f265da2dbe02ba3c)
