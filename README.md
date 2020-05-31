@@ -1,3 +1,5 @@
+# Composing builds vs buildSrc
+
 ![](http://cdn.51git.cn/2020-05-30-15908387076245.jpg)
 
 ## 前言
@@ -21,9 +23,7 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 > 
 > buildSrc的更改会导致整个项目过时，因此，在进行小的增量更改时，-- --no-rebuild命令行选项通常有助于获得更快的反馈。不过，请记住要定期或至少在完成后运行完整版本。
 
-汇总一句话就是说，buildSrc 依赖更新将重新构建整个项目，那么有没有一种方法支持自动补全和单击跳转，有不用重新构建整个项目，Composing builds 就可以实现，接下来我们来演示一下 buildSrc 和 Composing builds 它们的 build 的时间，相关代码我已经上传到 GitHub 了
-
-[地址：https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
+汇总一句话就是说，buildSrc 依赖更新将重新构建整个项目，那么有没有一种方法支持自动补全和单击跳转，有不用重新构建整个项目，Composing builds 就可以实现，接下来我们来演示一下 buildSrc 和 Composing builds 它们的 build 的时间，相关代码我已经上传到 GitHub 了：[ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
 
 **通过这篇文章你将学习到以下内容，将在文末总结部分会给出相应的答案**
 
@@ -174,12 +174,12 @@ plugins{
 
 Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件，两者在使用都是差不多的
 
-**快捷的使用 buildSrc** 
+**如何快速使用 buildSrc** 
 
 * 访问 [ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc) 拷贝 buildSrc 文件夹到你的项目的根目录
 * 重启你的 Android Studio，项目里就会多出一个名为 buildSrc 的 module
 
-**快捷的使用 Composing builds**
+**如何快速使用 Composing builds**
 
 * 访问 [ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc) 拷贝 versionPlugin 文件夹到你的项目的根目录
 * 按照上面的配置方式，分配在 settings.gradle 和 app 模块的 build.gradle 引用插件即可
@@ -192,9 +192,7 @@ Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings
 * 编译速度：当修改了版本号，Project-buildSrc 项目 Build 的时间几乎是 Project-ComposingBuild  项目的 4.6 倍（ PS: 每个人的环境不同，时间上会有差异，但是 Project-buildSrc 的时间总是大于 Project-ComposingBuild ）
 * 使用的区别：Composing builds 比 buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件
 
-Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub 了
-
-[地址：https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
+Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub 了：[ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
 
 **到目前为止大概管理 Gradle 依赖提供了 4 种不同方法：**
 
@@ -216,4 +214,45 @@ Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub �
 ## 结语
 
 致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，可以关注我，如果你喜欢这篇文章欢迎 star，一起来学习，期待与你一起成长
+
+### 文章列表
+
+由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
+
+* 数据结构： 数组、栈、队列、字符串、链表、树……
+* 算法： 查找算法、搜索算法、位运算、排序、数学、……
+
+每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)，一起来学习，期待与你一起成长
+
+#### Android 10 源码系列
+
+* [0xA01 Android 10 源码分析：APK 是如何生成的](https://juejin.im/post/5e4366c3f265da57397e1189)
+* [0xA02 Android 10 源码分析：APK 的安装流程](https://juejin.im/post/5e5a1e6a6fb9a07cb427d8cd)
+* [0xA03 Android 10 源码分析：APK 加载流程之资源加载](https://juejin.im/post/5e6c8c14f265da574b792a1a)
+* [0xA04 Android 10 源码分析：APK 加载流程之资源加载（二）](https://juejin.im/post/5e7f0f2c51882573c4676bc7)
+* [0xA05 Android 10 源码分析：Dialog 加载绘制流程以及在 Kotlin、DataBinding 中的使用](https://juejin.im/post/5e9199db6fb9a03c7916f635)
+* [0xA06 Android 10 源码分析：WindowManager 视图绑定以及体系结构](https://juejin.im/post/5ead0b865188256d545fd2f8)
+
+#### Android 应用系列
+
+* [如何高效获取视频截图](https://juejin.im/post/5d11d8835188251c10631ffd)
+* [如何在项目中封装 Kotlin + Android Databinding](https://juejin.im/post/5e9c434a51882573663f6cc6)
+* [[译][Google工程师] 刚刚发布了 Fragment 的新特性 “Fragment 间传递数据的新方式” 以及源码分析](https://juejin.im/post/5eb58da05188256d6d6bb248) 
+* [[译][2.4K Start] 放弃 Dagger 拥抱 Koin](https://juejin.im/post/5ebc1eb8e51d454dcf45744e?utm_source=gold_browser_extension)
+* [[译][5k+] Kotlin 的性能优化那些事](https://juejin.im/post/5ec0f3afe51d454db11f8a94#heading-7)
+* [[译][Google工程师] 详解 FragmentFactory 如何优雅使用 Koin 以及部分源码分析](https://juejin.im/post/5ecb16f1f265da76fb0c3967)
+* [[译] 解密 RxJava 的异常处理机制](https://juejin.im/post/5ecc10626fb9a047e25d5aac)
+
+#### 工具系列
+
+* [为数不多的人知道的 AndroidStudio 快捷键(一)](https://juejin.im/post/5df4933e518825126e639d62)
+* [为数不多的人知道的 AndroidStudio 快捷键(二)](https://juejin.im/post/5df986d66fb9a016613903da)
+* [关于 adb 命令你所需要知道的](https://juejin.im/post/5d57cfff51882505a87a8526)
+* [10分钟入门 Shell 脚本编程](https://juejin.im/post/5a6378055188253dc332130a)
+
+
+#### 逆向系列
+
+* [基于 Smali 文件 Android Studio 动态调试 APP](https://juejin.im/post/5c8ce8b76fb9a049e30900bf)
+* [解决在 Android Studio 3.2 找不到 Android Device Monitor 工具](https://juejin.im/post/5c556ff7f265da2dbe02ba3c)
 
