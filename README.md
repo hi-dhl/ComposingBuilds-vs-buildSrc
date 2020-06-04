@@ -163,7 +163,7 @@ class Deps : Plugin<Project> {
 ```
 
 * 在 settings.gradle 文件内添加 `includeBuild 'versionPlugin'` 重启你的 Android Studio
-* 在 app 模块 build.gradle 文件内添加以下内容，就可以实现上面演示的效果
+* 在 app 模块 build.gradle 文件内**首行**添加以下内容，就可以实现上面演示的效果
 
 ```
 plugins{
@@ -171,6 +171,8 @@ plugins{
     id "com.hi.dhl.plugin"
 }
 ```
+
+**ps：plugins{} 需要放在 app 模块 build.gradle 文件内首行位置**
 
 Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件，两者在使用都是差不多的
 
@@ -226,12 +228,15 @@ Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub �
 
 #### Android 10 源码系列
 
+正在写一系列的 Android 10 源码分析的文章，了解系统源码，不仅有助手分析问题，在面试过程中，对我们也是非常有帮助的，如果你同我一样喜欢研究 Android 源码，可以关注我 GitHub 上的 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)，一起来学习，期待与你一起成长
+
 * [0xA01 Android 10 源码分析：APK 是如何生成的](https://juejin.im/post/5e4366c3f265da57397e1189)
 * [0xA02 Android 10 源码分析：APK 的安装流程](https://juejin.im/post/5e5a1e6a6fb9a07cb427d8cd)
 * [0xA03 Android 10 源码分析：APK 加载流程之资源加载](https://juejin.im/post/5e6c8c14f265da574b792a1a)
 * [0xA04 Android 10 源码分析：APK 加载流程之资源加载（二）](https://juejin.im/post/5e7f0f2c51882573c4676bc7)
 * [0xA05 Android 10 源码分析：Dialog 加载绘制流程以及在 Kotlin、DataBinding 中的使用](https://juejin.im/post/5e9199db6fb9a03c7916f635)
 * [0xA06 Android 10 源码分析：WindowManager 视图绑定以及体系结构](https://juejin.im/post/5ead0b865188256d545fd2f8)
+* [更多](https://github.com/hi-dhl/Android10-Source-Analysis)
 
 #### Android 应用系列
 
