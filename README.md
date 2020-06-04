@@ -219,6 +219,8 @@ Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub �
 
 ### 文章列表
 
+#### 算法
+
 由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
 
 * 数据结构： 数组、栈、队列、字符串、链表、树……
@@ -228,7 +230,7 @@ Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub �
 
 #### Android 10 源码系列
 
-正在写一系列的 Android 10 源码分析的文章，了解系统源码，不仅有助手分析问题，在面试过程中，对我们也是非常有帮助的，如果你同我一样喜欢研究 Android 源码，可以关注我 GitHub 上的 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)，一起来学习，期待与你一起成长
+正在写一系列的 Android 10 源码分析的文章，了解系统源码，不仅有助于分析问题，在面试过程中，对我们也是非常有帮助的，如果你同我一样喜欢研究 Android 源码，可以关注我 GitHub 上的 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)，一起来学习，期待与你一起成长
 
 * [0xA01 Android 10 源码分析：APK 是如何生成的](https://juejin.im/post/5e4366c3f265da57397e1189)
 * [0xA02 Android 10 源码分析：APK 的安装流程](https://juejin.im/post/5e5a1e6a6fb9a07cb427d8cd)

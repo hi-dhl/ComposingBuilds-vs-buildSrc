@@ -269,3 +269,5 @@ captures/
 
 # DS_Store files
 *.DS_Store
+
+.MWebMetaData/
