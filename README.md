@@ -1,4 +1,11 @@
-# Composing builds vs buildSrc
+# <p align="center"> Composing builds vs buildSrc </p> 
+
+<p align="center">
+仓库提供了 buildSrc 和 Composing builds 两个构建脚本，下文有使用方法</p>
+
+<p align="center">
+<a href="https://github.com/hi-dhl"><img src="https://img.shields.io/badge/GitHub-HiDhl-4BC51D.svg?style=flat"></a> <img src="https://img.shields.io/badge/language-Gradle | Kotlin-orange.svg"/> <img src="https://img.shields.io/badge/platform-android-lightgrey.svg"/>
+</p>
 
 ![](http://cdn.51git.cn/2020-05-30-15908387076245.jpg)
 
