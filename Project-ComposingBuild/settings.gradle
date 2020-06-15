@@ -1,5 +1,5 @@
 rootProject.name='Project-ComposingBuild'
+includeBuild("../versionPlugin")
 include ':app'
-includeBuild 'versionPlugin'
 
 
