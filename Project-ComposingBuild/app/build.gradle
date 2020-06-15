@@ -1,4 +1,7 @@
-import com.hi.dhl.plugin.Deps
+import com.hi.dhl.plugin.AndroidX
+import com.hi.dhl.plugin.BuildConfig
+import com.hi.dhl.plugin.Depend
+import com.hi.dhl.plugin.kotlinLib
 
 plugins{
     // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的id
@@ -9,15 +12,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion BuildConfig.compileSdkVersion
+    buildToolsVersion BuildConfig.buildToolsVersion
 
     defaultConfig {
         applicationId "com.hi.dhl.demo"
-        minSdkVersion 26
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion BuildConfig.minSdkVersion
+        targetSdkVersion BuildConfig.targetSdkVersion
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,13 +36,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Deps.kotlinStdlibJdk7
-    implementation Deps.appcompat
-    implementation Deps.ktsCode
-    implementation Deps.constraintlayout
-    implementation Deps.retrofit
+    implementation kotlinLib.stdlibJdk7
+    implementation AndroidX.appcompat
+    implementation AndroidX.coreKtx
+    implementation AndroidX.constraintlayout
+    implementation Depend.retrofit
 
-    testImplementation Deps.junit
-    androidTestImplementation Deps.junitExt
-    androidTestImplementation Deps.espressoCore
+    testImplementation Depend.junit
+    androidTestImplementation Depend.androidTestJunit
+    androidTestImplementation Depend.espressoCore
 }
