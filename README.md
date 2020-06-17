@@ -18,13 +18,13 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 * 共享 buildSrc 库工件的引用，全局只有一个地方可以修改它
 * 支持 AndroidStudio 自动补全
 
-![自动补全](http://cdn.51git.cn/2020-05-30-自动补全.gif)
+![](http://cdn.51git.cn/2020-05-30-自动补全.gif)
 
 * 支持 AndroidStudio 单击跳转
 
-![单击跳转](http://cdn.51git.cn/2020-05-30-单击跳转.gif)
+![](http://cdn.51git.cn/2020-05-30-单击跳转.gif)
 
-又优点的同时也有缺点，来看一下 [Gradle 文档](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources)
+有优点的同时也有缺点，来看一下 [Gradle 文档](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources)
 
 > A change in buildSrc causes the whole project to become out-of-date. Thus, when making small incremental changes, the --no-rebuild command-line option is often helpful to get faster feedback. Remember to run a full build regularly or at least when you’re done, though.
 > 
@@ -54,7 +54,7 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 
 ### 什么是 Composing builds
 
-摘自 [Gradle 文档](https://docs.gradle.org/current/userguide/composite_builds.html) 复合构建只是包含其他构建的构建. 在许多方面，复合构建类似于 Gradle 多项目构建，不同之处在于，它包括完整的 builds ，而不是包含单个 projects
+摘自 [Gradle 文档](https://docs.gradle.org/current/userguide/composite_builds.html)：复合构建只是包含其他构建的构建. 在许多方面，复合构建类似于 Gradle 多项目构建，不同之处在于，它包括完整的 builds ，而不是包含单个 projects
 
 * 组合通常独立开发的构建，例如，在应用程序使用的库中尝试错误修复时
 * 将大型的多项目构建分解为更小，更孤立的块，可以根据需要独立或一起工作
@@ -65,7 +65,7 @@ buildSrc 这种方式，在最近几年是非常流行的，因为它有以下�
 
 ![Composing-builds-vs-buildSr](http://cdn.51git.cn/2020-05-30-Composing-builds-vs-buildSrc2.png)
 
-Project-buildSrc 和 Project-ComposingBuild 它们的结构都差不多的，接下来我们来看一下，编译速度 和 使用有什么不同。
+Project-buildSrc 和 Project-ComposingBuild 它们的结构都差不多，接下来我们来看一下，编译速度 和 使用上有什么不同。
 
 #### 编译速度
 
@@ -123,8 +123,20 @@ object Deps {
 
 **Project-ComposingBuild**
 
-* 新建的 module 名称 versionPlugin
-* 在 versionPlugin 文件夹下的 build.gradle 文件内，添加以下内容
+* 新建的 module 名称 VersionPlugin
+
+    需要注意 VersionPlugin 不能放在 Project 目录下，否则会抛出以下异常
+    
+    ```
+    Project directory '/Users/username/Downloads/ComposingBuilds-vs-buildSrc/Project-ComposingBuild/versionPlugin' is not part of the build defined by settings file '/Users/username/Downloads/ComposingBuilds-vs-buildSrc/Project-ComposingBuild/settings.gradle'. If this is an unrelated build, it must have its own settings file.
+    ```
+    
+    正确的应该将 VersionPlugin 放到和 Project 同级目录，或者 Project 以外的其他的地方，如下图所示
+    
+   ![](http://cdn.51git.cn/2020-06-17-15923835504939.jpg)
+
+
+* 在 VersionPlugin 文件夹下的 build.gradle 文件内，添加以下内容
 
 ```
 buildscript {
@@ -156,7 +168,7 @@ gradlePlugin {
 }
 ```
 
-* 在 `versionPlugin/src/main/java/包名/` 目录下新建 Deps.kt 文件，添加以下内容
+* 在 `VersionPlugin/src/main/java/包名/` 目录下新建 Deps.kt 文件，添加以下内容
 
 ```
 class Deps : Plugin<Project> {
@@ -169,12 +181,12 @@ class Deps : Plugin<Project> {
 }
 ```
 
-* 在 settings.gradle 文件内添加 `includeBuild 'versionPlugin'` 重启你的 Android Studio
+* 在 settings.gradle 文件内添加 `includeBuild '../VersionPlugin'` 重启你的 Android Studio
 * 在 app 模块 build.gradle 文件内**首行**添加以下内容，就可以实现上面演示的效果
 
 ```
 plugins{
-    // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的 id
+    // 这个 id 就是在 VersionPlugin 文件夹下 build.gradle 文件内定义的 id
     id "com.hi.dhl.plugin"
 }
 ```
@@ -190,7 +202,7 @@ Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings
 
 **如何快速使用 Composing builds**
 
-* 访问 [ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc) 拷贝 versionPlugin 文件夹到你的项目的根目录
+* 访问 [ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc) 拷贝 VersionPlugin 文件夹，放到和 Project 同级目录，或者 Project 以外的其他的地方
 * 按照上面的配置方式，分配在 settings.gradle 和 app 模块的 build.gradle 引用插件即可
 
 ## 总结
@@ -199,7 +211,7 @@ Project-ComposingBuild 比 Project-buildSrc 多了两步操作需要在 settings
 
 * 目录结构：它们的基本目录结构是相同的，可以根据自己的项目进行不同的扩展
 * 编译速度：当修改了版本号，Project-buildSrc 项目 Build 的时间几乎是 Project-ComposingBuild  项目的 4.6 倍（ PS: 每个人的环境不同，时间上会有差异，但是 Project-buildSrc 的时间总是大于 Project-ComposingBuild ）
-* 使用的区别：Composing builds 比 buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件
+* 使用上的区别：Composing builds 比 buildSrc 多了两步操作需要在 settings.gradle 和 build.gradle 引入插件
 
 Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub 了：[ComposingBuilds-vs-buildSrc](https://github.com/hi-dhl/ComposingBuilds-vs-buildSrc)
 
@@ -222,51 +234,22 @@ Project-buildSrc 和 Project-ComposingBuild 相关代码已经上传到 GitHub �
 
 ## 结语
 
-致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，可以关注我，如果你喜欢这篇文章欢迎 star，一起来学习，期待与你一起成长
+致力于分享一系列 Android 系统源码、逆向分析、算法、翻译、Jetpack  源码相关的文章，可以关注我，欢迎 star，一起来学习，期待与你一起成长，另外我还在维护其他三个项目 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)、[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin) 和 [Technical-Article-Translation](https://github.com/hi-dhl/Technical-Article-Translation) 可以前去查看
 
-### 文章列表
+### Android10-Source-Analysis
 
-#### 算法
+正在写一系列的 Android 10 源码分析的文章，了解系统源码，不仅有助于分析问题，在面试过程中，对我们也是非常有帮助的，如果你同我一样喜欢研究 Android 源码，可以关注我 GitHub 上的 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)。
 
-由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序
+### Leetcode-Solutions-with-Java-And-Kotlin
+
+由于 LeetCode 的题库庞大，每个分类都能筛选出数百道题，由于每个人的精力有限，不可能刷完所有题目，因此我按照经典类型题目去分类、和题目的难易程度去排序。
 
 * 数据结构： 数组、栈、队列、字符串、链表、树……
 * 算法： 查找算法、搜索算法、位运算、排序、数学、……
 
-每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)，一起来学习，期待与你一起成长
+每道题目都会用 Java 和 kotlin 去实现，并且每道题目都有解题思路，如果你同我一样喜欢算法、LeetCode，可以关注我 GitHub 上的 LeetCode 题解：[Leetcode-Solutions-with-Java-And-Kotlin](https://github.com/hi-dhl/Leetcode-Solutions-with-Java-And-Kotlin)。
 
-#### Android 10 源码系列
+### Technical-Article-Translation
 
-正在写一系列的 Android 10 源码分析的文章，了解系统源码，不仅有助于分析问题，在面试过程中，对我们也是非常有帮助的，如果你同我一样喜欢研究 Android 源码，可以关注我 GitHub 上的 [Android10-Source-Analysis](https://github.com/hi-dhl/Android10-Source-Analysis)，一起来学习，期待与你一起成长
-
-* [0xA01 Android 10 源码分析：APK 是如何生成的](https://juejin.im/post/5e4366c3f265da57397e1189)
-* [0xA02 Android 10 源码分析：APK 的安装流程](https://juejin.im/post/5e5a1e6a6fb9a07cb427d8cd)
-* [0xA03 Android 10 源码分析：APK 加载流程之资源加载](https://juejin.im/post/5e6c8c14f265da574b792a1a)
-* [0xA04 Android 10 源码分析：APK 加载流程之资源加载（二）](https://juejin.im/post/5e7f0f2c51882573c4676bc7)
-* [0xA05 Android 10 源码分析：Dialog 加载绘制流程以及在 Kotlin、DataBinding 中的使用](https://juejin.im/post/5e9199db6fb9a03c7916f635)
-* [0xA06 Android 10 源码分析：WindowManager 视图绑定以及体系结构](https://juejin.im/post/5ead0b865188256d545fd2f8)
-* [更多](https://github.com/hi-dhl/Android10-Source-Analysis)
-
-#### Android 应用系列
-
-* [如何高效获取视频截图](https://juejin.im/post/5d11d8835188251c10631ffd)
-* [如何在项目中封装 Kotlin + Android Databinding](https://juejin.im/post/5e9c434a51882573663f6cc6)
-* [[译][Google工程师] 刚刚发布了 Fragment 的新特性 “Fragment 间传递数据的新方式” 以及源码分析](https://juejin.im/post/5eb58da05188256d6d6bb248) 
-* [[译][2.4K Start] 放弃 Dagger 拥抱 Koin](https://juejin.im/post/5ebc1eb8e51d454dcf45744e?utm_source=gold_browser_extension)
-* [[译][5k+] Kotlin 的性能优化那些事](https://juejin.im/post/5ec0f3afe51d454db11f8a94#heading-7)
-* [[译][Google工程师] 详解 FragmentFactory 如何优雅使用 Koin 以及部分源码分析](https://juejin.im/post/5ecb16f1f265da76fb0c3967)
-* [[译] 解密 RxJava 的异常处理机制](https://juejin.im/post/5ecc10626fb9a047e25d5aac)
-
-#### 工具系列
-
-* [为数不多的人知道的 AndroidStudio 快捷键(一)](https://juejin.im/post/5df4933e518825126e639d62)
-* [为数不多的人知道的 AndroidStudio 快捷键(二)](https://juejin.im/post/5df986d66fb9a016613903da)
-* [关于 adb 命令你所需要知道的](https://juejin.im/post/5d57cfff51882505a87a8526)
-* [10分钟入门 Shell 脚本编程](https://juejin.im/post/5a6378055188253dc332130a)
-
-
-#### 逆向系列
-
-* [基于 Smali 文件 Android Studio 动态调试 APP](https://juejin.im/post/5c8ce8b76fb9a049e30900bf)
-* [解决在 Android Studio 3.2 找不到 Android Device Monitor 工具](https://juejin.im/post/5c556ff7f265da2dbe02ba3c)
+目前正在整理和翻译一系列精选国外的技术文章，不仅仅是翻译，很多优秀的英文技术文章提供了很好思路和方法，每篇文章都会有**译者思考**部分，对原文的更加深入的解读，可以关注我 GitHub 上的 [Technical-Article-Translation](https://github.com/hi-dhl/Technical-Article-Translation)。
 
