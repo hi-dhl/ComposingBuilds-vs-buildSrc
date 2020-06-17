@@ -1,7 +1,8 @@
 import com.hi.dhl.plugin.AndroidX
 import com.hi.dhl.plugin.BuildConfig
 import com.hi.dhl.plugin.Depend
-import com.hi.dhl.plugin.kotlinLib
+import com.hi.dhl.plugin.Kt
+import com.hi.dhl.plugin.Retrofit
 
 plugins{
     // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的id
@@ -36,11 +37,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation kotlinLib.stdlibJdk7
+    implementation Kt.stdlibJdk7
     implementation AndroidX.appcompat
     implementation AndroidX.coreKtx
     implementation AndroidX.constraintlayout
-    implementation Depend.retrofit
+    implementation Retrofit.runtime
 
     testImplementation Depend.junit
     androidTestImplementation Depend.androidTestJunit
