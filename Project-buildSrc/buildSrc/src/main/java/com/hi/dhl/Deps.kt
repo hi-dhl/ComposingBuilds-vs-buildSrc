@@ -11,6 +11,7 @@ object Versions {
     val junit = "4.12"
     val junitExt = "1.1.1"
     val espressoCore = "3.2.0"
+    val mockitoCore = "3.3.3"
 }
 
 object Deps {
@@ -22,4 +23,5 @@ object Deps {
     val junit =  "junit:junit:${Versions.junit}"
     val junitExt =  "androidx.test.ext:junit:${Versions.junitExt}"
     val espressoCore =  "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
+    val mockitoCore = "org.mockito:mockito-core:${Versions.mockitoCore}"
 }
