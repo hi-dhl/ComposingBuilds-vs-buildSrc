@@ -1,10 +1,4 @@
-import com.hi.dhl.plugin.AndroidX
-import com.hi.dhl.plugin.BuildConfig
-import com.hi.dhl.plugin.Depend
-import com.hi.dhl.plugin.Kt
-import com.hi.dhl.plugin.Retrofit
-
-
+import com.hi.dhl.plugin.*
 
 android {
     compileSdkVersion BuildConfig.compileSdkVersion
