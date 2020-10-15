@@ -1,11 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+
 buildscript {
     ext.kotlin_version = '1.3.72'
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
@@ -16,11 +17,35 @@ buildscript {
     }
 }
 
+/**
+ * 如果在多项目构建中，可能想把插件应用到子项目中，apply false 来告诉 Gradle 不要应用插件
+ *
+ * plugins {} 默认的行为是解析和应用插件
+ */
+plugins {
+    // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的id
+    id "com.hi.dhl.plugin" apply false
+}
+
 allprojects {
     repositories {
         google()
         jcenter()
-        
+
+    }
+}
+
+subprojects { subproject ->
+    // 默认应用所有子项目中
+    apply plugin: 'com.hi.dhl.plugin'
+
+    // 如果想应用到某个子项目中，可以通过 subproject.name 来判断应用在哪个子项目中
+    // subproject.name 是你子项目的名字，示例如下
+    // 官方文档地址：https://guides.gradle.org/creating-multi-project-builds/#add_documentation
+    if (subproject.name == "app") {
+        apply plugin: 'com.android.application'
+        apply plugin: 'kotlin-android'
+        apply plugin: 'kotlin-android-extensions'
     }
 }
 
