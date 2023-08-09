@@ -1,8 +1,7 @@
 import com.hi.dhl.plugin.*
 
 android {
-    compileSdkVersion BuildConfig.compileSdkVersion
-    buildToolsVersion BuildConfig.buildToolsVersion
+    compileSdk BuildConfig.compileSdkVersion
 
     defaultConfig {
         applicationId "com.hi.dhl.demo"
@@ -20,12 +19,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.hi.dhl.demo'
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Kt.stdlibJdk7
+//    implementation Kt.stdlibJdk7
     implementation AndroidX.appcompat
     implementation AndroidX.coreKtx
     implementation AndroidX.constraintlayout

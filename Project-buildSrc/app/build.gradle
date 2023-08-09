@@ -2,11 +2,11 @@ import com.hi.dhl.Deps
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdk 30
+    namespace 'com.hi.dhl.demo'
 
     defaultConfig {
         applicationId "com.hi.dhl.demo"
@@ -25,6 +25,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
 }
 
 
@@ -36,7 +45,7 @@ configurations {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Deps.kotlinStdlibJdk7
+//    implementation Deps.kotlinStdlibJdk7
     implementation Deps.ktsCode
     implementation Deps.constraintlayout
     implementation Deps.retrofit

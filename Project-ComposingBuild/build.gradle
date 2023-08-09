@@ -2,14 +2,14 @@
 
 
 buildscript {
-    ext.kotlin_version = '1.3.72'
+    ext.kotlin_version = '1.8.10'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.android.tools.build:gradle:8.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -30,7 +30,7 @@ plugins {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 }
@@ -45,7 +45,7 @@ subprojects { subproject ->
     if (subproject.name == "app") {
         apply plugin: 'com.android.application'
         apply plugin: 'kotlin-android'
-        apply plugin: 'kotlin-android-extensions'
+        apply plugin: 'kotlin-parcelize'
     }
 }
 
