@@ -1,10 +1,10 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         // 因为使用的 Kotlin 需要需要添加 Kotlin 插件
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10"
     }
 }
 
@@ -13,24 +13,12 @@ apply plugin: 'java-gradle-plugin'
 
 repositories {
     // 需要添加 jcenter 否则会提示找不到 gradlePlugin
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation gradleApi()
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72"
-
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
 }
 
 gradlePlugin {
